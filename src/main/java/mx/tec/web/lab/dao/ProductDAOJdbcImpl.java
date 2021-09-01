@@ -137,6 +137,13 @@ public class ProductDAOJdbcImpl implements ProductDAO {
 		});
 	}
 
+	private void removeSkus(final long id) {
+		String sql = "DELETE FROM Sku WHERE parentProduct_id = " + id;
+		jdbcTemplate.query(sql, (ResultSet rs) -> {
+			System.out.println(rs);
+		});
+	}
+	
 	@Override
 	public ProductVO insert(ProductVO newProduct) {
 		// TODO Auto-generated method stub
@@ -145,9 +152,15 @@ public class ProductDAOJdbcImpl implements ProductDAO {
 
 	@Override
 	public void remove(ProductVO existingProduct) {
-		// TODO Auto-generated method stub
-
+		long id = existingProduct.getId();
+		String sql = "DELETE FROM Product WHERE id = " + id;
+		jdbcTemplate.query(sql, (ResultSet rs) -> {
+			System.out.println(rs);
+		});
+		removeSkus(id);
 	}
+
+
 
 	@Override
 	public void update(ProductVO existingProduct) {
