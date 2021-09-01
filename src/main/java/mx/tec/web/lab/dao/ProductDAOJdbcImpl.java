@@ -40,6 +40,11 @@ public class ProductDAOJdbcImpl implements ProductDAO {
 	@Autowired
 	CommentsService commentService;
 	
+	/**
+	 * Method for getting the child Skus of a Product.
+	 * @param parentId The id of the Product to get the Skus from.
+	 * @return
+	 */
 	public List<SkuVO> findChildSkus(final long parentId) {
 		String sql = "SELECT * FROM Sku WHERE parentProduct_id = " + parentId;
 		

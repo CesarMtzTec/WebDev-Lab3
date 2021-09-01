@@ -11,18 +11,20 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.tec.web.lab.mapper.ProductMapper;
 import mx.tec.web.lab.vo.ProductVO;
 import mx.tec.web.lab.repository.ProductRepository;
+import mx.tec.web.lab.service.CommentsService;
 
 /**
  * JPA Implementation for Product Data Access Object
  * @author Enrique Sanchez
  */
 @Component("jpa")
-public class ProductDAOJPAImpl implements ProductDAO {
+public class ProductDAOJPAImpl implements ProductDAO {	
 	/** A reference to the Product Repository */
 	@Resource
 	private ProductRepository productRepository;

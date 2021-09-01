@@ -13,10 +13,12 @@ import java.util.Optional;
 import javax.annotation.Resource;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.tec.web.lab.entity.Product;
 import mx.tec.web.lab.entity.Sku;
+import mx.tec.web.lab.service.CommentsService;
 import mx.tec.web.lab.vo.ProductVO;
 
 /**
@@ -30,6 +32,10 @@ public class ProductMapper {
 	 */
 	@Resource
     private ModelMapper modelMapper;
+	
+	/** CommetsService */
+	@Autowired
+	CommentsService commentsService;
 
 	/**
 	 * Convert from Product Entity to Product Value Object
@@ -38,7 +44,7 @@ public class ProductMapper {
 	 */
 	public ProductVO convertToVO(final Product product) {
 		ProductVO productVO = modelMapper.map(product, ProductVO.class);
-		productVO.setComments(null);
+		productVO.setComments(commentsService.getComments());
 		return productVO;
 	}	
 

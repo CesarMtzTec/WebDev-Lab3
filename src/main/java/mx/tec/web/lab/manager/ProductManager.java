@@ -29,7 +29,7 @@ public class ProductManager {
 	 * Reference to the Product DAO
 	 */
 	@Resource
-	@Qualifier("jdbc")
+	@Qualifier("jpa")
 	private ProductDAO productDAO;
 	
 	/**
