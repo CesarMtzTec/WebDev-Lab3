@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import mx.tec.web.lab.service.CommentsService;
 import mx.tec.web.lab.vo.ProductVO;
+import mx.tec.web.lab.vo.SkuVO;
 
 /**
  * @author Enrique Sanchez
@@ -39,9 +40,32 @@ public class ProductDAOJdbcImpl implements ProductDAO {
 	@Autowired
 	CommentsService commentService;
 	
+	public List<SkuVO> findChildSkus(final long parentId) {
+		String sql = "SELECT * FROM Sku WHERE parentProduct_id = " + parentId;
+		
+		return jdbcTemplate.query(sql, (ResultSet rs) -> {
+			List<SkuVO> skus = new ArrayList<>();
+			while(rs.next()) {
+				SkuVO sku = new SkuVO(
+					rs.getLong(ID),
+					rs.getString("color"),
+					rs.getString("size"),
+					rs.getDouble("listPrice"),
+					rs.getDouble("salePrice"),
+					rs.getLong("quantityOnHand"),
+					rs.getString("smallImageUrl"),
+					rs.getString("mediumImageUrl"),
+					rs.getString("largeImageUrl")
+				);
+				skus.add(sku);	
+			}
+			return skus;
+		});
+	}
+	
 	@Override
 	public List<ProductVO> findAll() {
-		String sql = "SELECT id, name, description FROM product";
+		String sql = "SELECT id, name, description FROM Product";
 
 		return jdbcTemplate.query(sql, (ResultSet rs) -> {
 			List<ProductVO> list = new ArrayList<>();
@@ -51,7 +75,7 @@ public class ProductDAOJdbcImpl implements ProductDAO {
 					rs.getLong(ID),
 					rs.getString(NAME), 
 					rs.getString(DESCRIPTION), 
-					new ArrayList<>(),
+					findChildSkus(rs.getLong(ID)),
 					commentService.getComments()
 				);
 
@@ -74,7 +98,7 @@ public class ProductDAOJdbcImpl implements ProductDAO {
 					rs.getLong(ID),
 					rs.getString(NAME), 
 					rs.getString(DESCRIPTION), 
-					new ArrayList<>(),
+					findChildSkus(rs.getLong(ID)),
 					commentService.getComments()
 				);
 				
